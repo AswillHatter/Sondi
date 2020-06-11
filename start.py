@@ -44,7 +44,7 @@ def get_img():
     return render_template('index.html')
 
 
-@app.route('/runFN', methods=['GET'])
+@app.route('/runFN', methods=['POST'])
 def run_proc():
     print("run_proc")
     s = do_path()
@@ -71,6 +71,9 @@ def run_proc():
     output_mas = form_output_mas(factor_mas)
     print("\n", output_mas)
     final_output = format_final_output(output_mas)
+    files = glob.glob(r"C:\Users\oboro\PycharmProjects\Union\proc_img\*")
+    for f in files:
+        os.remove(f)
     return render_template('index.html', data = final_output)
 
 
