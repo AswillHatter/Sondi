@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, url_for, request, send_from_
 from werkzeug.utils import secure_filename
 
 
-UPLOAD_FOLDER = r"C:\Users\oboro\PycharmProjects\Union\proc_img"
+UPLOAD_FOLDER = r"proc_img"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
@@ -21,7 +21,7 @@ def uploaded_file(filename):
 
 @app.route('/', methods=['GET'])
 def hello_world():
-    files = glob.glob(r"C:\Users\oboro\PycharmProjects\Union\proc_img\*")
+    files = glob.glob(r"proc_img\*")
     for f in files:
         os.remove(f)
     return render_template('index.html')
@@ -82,14 +82,14 @@ def format_final_output(output_mas):
 
 def do_path():
     s = None
-    if os.path.exists(r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.png"):
-        s = r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.png"
-    if os.path.exists(r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.jpg"):
-        s = r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.jpg"
-    if os.path.exists(r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.jpeg"):
-        s = r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.jpeg"
-    if os.path.exists(r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.gif"):
-        s = r"C:\Users\oboro\PycharmProjects\Union\proc_img\file.gif"
+    if os.path.exists(r"proc_img\file.png"):
+        s = r"proc_img\file.png"
+    if os.path.exists(r"proc_img\file.jpg"):
+        s = r"proc_img\file.jpg"
+    if os.path.exists(r"proc_img\file.jpeg"):
+        s = r"proc_img\file.jpeg"
+    if os.path.exists(r"proc_img\file.gif"):
+        s = r"proc_img\file.gif"
     return s
 
 
