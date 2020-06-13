@@ -1,6 +1,12 @@
 import os
 import cv2
 import glob
+import numpy as np
+import re
+import base64
+import codecs
+#from Pillow import Image
+from io import BytesIO
 from flask import Flask, render_template, redirect, url_for, request, send_from_directory
 from werkzeug.utils import secure_filename
 
@@ -21,9 +27,7 @@ def uploaded_file(filename):
 
 @app.route('/', methods=['GET'])
 def hello_world():
-    files = glob.glob(r"proc_img\*")
-    for f in files:
-        os.remove(f)
+
     return render_template('index.html')
 
 
@@ -44,6 +48,30 @@ def get_img():
     return render_template('index.html')
 
 
+@app.route('/open_cam', methods=['POST'])
+def open_camera_page():
+    return render_template('open_cam.html')
+
+
+@app.route('/close_cam', methods=['POST'])
+def close_camera_page():
+    print("do?")
+
+    data1 = request.get_data()
+    print(data1)
+
+    #image_data = codecs.decode(data1, encoding='utf-8', errors='strict')
+    image_data = base64.decodestring(data1)
+    print('image_data = ', image_data)
+    f = open(r"proc_img\file.png", "wb")
+    f.write(image_data)
+    f.close()
+
+    print("do!")
+
+    return render_template('index.html')
+
+
 @app.route('/runFN', methods=['POST'])
 def run_proc():
     print("run_proc")
@@ -52,17 +80,12 @@ def run_proc():
         print("true")
         import facenet_et as fn
         print("import")
-
         fn.procFile(s)
         print("end of if")
 
-    else:
-        print("false")
-        import facenet_et as fn
-        print("import")
-
-        fn.procWeb()
-        print("end of else")
+    files = glob.glob(r"C:\Users\oboro\PycharmProjects\Union\proc_img\*")
+    for f in files:
+        os.remove(f)
     mas = fn.mas_of_dist
     print(mas)
     maspl, masmi = choose(mas)
