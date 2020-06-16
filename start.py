@@ -83,18 +83,21 @@ def run_proc():
         fn.procFile(s)
         print("end of if")
 
-    files = glob.glob(r"C:\Users\oboro\PycharmProjects\Union\proc_img\*")
+    files = glob.glob(r"proc_img\*")
     for f in files:
         os.remove(f)
     mas = fn.mas_of_dist
-    print(mas)
-    maspl, masmi = choose(mas)
-    factor_mas = create_factor_mas(maspl, masmi)
-    print("\n", factor_mas)
-    output_mas = form_output_mas(factor_mas)
-    print("\n", output_mas)
-    final_output = format_final_output(output_mas)
-    files = glob.glob(r"C:\Users\oboro\PycharmProjects\Union\proc_img\*")
+    if len(mas) != 0:
+        print(mas)
+        maspl, masmi = choose(mas)
+        factor_mas = create_factor_mas(maspl, masmi)
+        print("\n", factor_mas)
+        output_mas = form_output_mas(factor_mas)
+        print("\n", output_mas)
+        final_output = format_final_output(output_mas)
+    else:
+        final_output = {"Лицо не обнаружено! Попробуйте загрузить другую фотографию."}
+    files = glob.glob(r"proc_img\*")
     for f in files:
         os.remove(f)
     return render_template('index.html', data = final_output)
