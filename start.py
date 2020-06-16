@@ -5,7 +5,6 @@ import numpy as np
 import re
 import base64
 import codecs
-#from Pillow import Image
 from io import BytesIO
 from flask import Flask, render_template, redirect, url_for, request, send_from_directory
 from werkzeug.utils import secure_filename
