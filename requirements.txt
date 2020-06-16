@@ -5,7 +5,6 @@ matplotlib
 mkl-fft
 mkl-random
 opencv-python
-pypiwin32
 pyreadline
 scikit-learn
 tensorflow
