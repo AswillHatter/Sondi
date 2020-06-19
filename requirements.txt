@@ -7,7 +7,6 @@ mkl-random
 mkl-service
 opencv-python
 pip-chill
-pypiwin32
 pyreadline
 scikit-learn
 tensorflow

@@ -6,6 +6,7 @@ import re
 import base64
 import codecs
 from io import BytesIO
+
 from flask import Flask, render_template, redirect, url_for, request, send_from_directory
 from werkzeug.utils import secure_filename
 
@@ -25,8 +26,12 @@ def uploaded_file(filename):
 
 
 @app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
+#@app.route('/Error', methods=['POST'])
 def hello_world():
-
+    files = glob.glob(r"proc_img\*")
+    for f in files:
+        os.remove(f)
     return render_template('index.html')
 
 
@@ -75,31 +80,39 @@ def close_camera_page():
 def run_proc():
     print("run_proc")
     s = do_path()
-    if (os.path.exists(s)):
+    print("s = ", s)
+    if s is not None:
         print("true")
         import facenet_et as fn
         print("import")
+
         fn.procFile(s)
         print("end of if")
 
-    files = glob.glob(r"proc_img\*")
-    for f in files:
-        os.remove(f)
-    mas = fn.mas_of_dist
-    if len(mas) != 0:
-        print(mas)
-        maspl, masmi = choose(mas)
-        factor_mas = create_factor_mas(maspl, masmi)
-        print("\n", factor_mas)
-        output_mas = form_output_mas(factor_mas)
-        print("\n", output_mas)
-        final_output = format_final_output(output_mas)
+        files = glob.glob(r"proc_img\*")
+        for f in files:
+            os.remove(f)
+        mas = fn.mas_of_dist
+
+        #del fn
+
+        if len(mas) != 0:
+            print(mas)
+            maspl, masmi = choose(mas)
+            factor_mas = create_factor_mas(maspl, masmi)
+            print("\n", factor_mas)
+            output_mas = form_output_mas(factor_mas)
+            print("\n", output_mas)
+            final_output = format_final_output(output_mas)
+        else:
+            final_output = {"Лицо не обнаружено! Попробуйте загрузить другую фотографию."}
+        files = glob.glob(r"proc_img\*")
+        for f in files:
+            os.remove(f)
+        return render_template('results.html', data = final_output)
     else:
-        final_output = {"Лицо не обнаружено! Попробуйте загрузить другую фотографию."}
-    files = glob.glob(r"proc_img\*")
-    for f in files:
-        os.remove(f)
-    return render_template('index.html', data = final_output)
+        return render_template('Error.html')
+
 
 
 def format_final_output(output_mas):
@@ -108,15 +121,16 @@ def format_final_output(output_mas):
         final_output = final_output + k.split("\n")
     return final_output
 
+
 def do_path():
     s = None
     if os.path.exists(r"proc_img\file.png"):
         s = r"proc_img\file.png"
-    if os.path.exists(r"proc_img\file.jpg"):
+    elif os.path.exists(r"proc_img\file.jpg"):
         s = r"proc_img\file.jpg"
-    if os.path.exists(r"proc_img\file.jpeg"):
+    elif os.path.exists(r"proc_img\file.jpeg"):
         s = r"proc_img\file.jpeg"
-    if os.path.exists(r"proc_img\file.gif"):
+    elif os.path.exists(r"proc_img\file.gif"):
         s = r"proc_img\file.gif"
     return s
 
